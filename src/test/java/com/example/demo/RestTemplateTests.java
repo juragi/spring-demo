@@ -37,4 +37,26 @@ public class RestTemplateTests {
         System.out.println(res);
     }
 
+    @Test 
+    public void fileTest2() {
+        RestTemplate restTemplate = new RestTemplate();
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", new FileSystemResource("path/to/file"));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+            "http://example.com/upload",
+            HttpMethod.POST,
+            requestEntity,
+            String.class);
+
+        System.out.println("Response status code: " + response.getStatusCode());
+        System.out.println("Response body: " + response.getBody());
+    }
+
 }
